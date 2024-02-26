@@ -59,6 +59,33 @@ router.route('/teachers')
    *         description: Teacher created successfully
    */
   .post(upload.single('profile'),insertTeacher, validator, conroller.addStudent);
+  /**
+   * @swagger
+   * /teachers:
+   *  post:
+   *  summary: Add a new teacher
+   * description: Add a new teacher
+   * tags: [Teachers]
+   * requestBody:
+   * required: true
+   *  content:
+   * application/json:
+   * schema:
+   * type: object
+   * properties:
+   * name:
+   * type: string
+   * subject:
+   * type: string
+   * example:
+   * name: "John Doe"
+   * subject: "Maths"
+   * responses:
+   * 201:
+   * description: Teacher added successfully
+   * 500:
+   * description: Internal server error
+   */
 
 router.route('/teachers/:id')
   /**
@@ -134,5 +161,41 @@ router.route('/teachers/:id')
    *         description: Teacher not found
    */
   .patch(upload.single('profile'),conroller.updateStudent);
+  /**
+   * @swagger
+   * /teachers/{id}:
+   *  patch:
+   *  summary: Update a teacher
+   * description: Update a teacher
+   * tags: [Teachers]
+   * parameters:
+   * - in: path
+   *  name: id
+   * required: true
+   * description: id of teacher
+   * schema:
+   * type: integer
+   * requestBody:
+   * required: true
+   * content:
+   * application/json:
+   * schema:
+   * type: object
+   * properties:
+   * name:
+   * type: string
+   * subject:
+   * type: string
+   * example:
+   * name: "John Doe"
+   * subject: "Maths"
+   * responses:
+   * 200:
+   * description: Teacher updated successfully
+   * 404:
+   * description: Teacher not found
+   * 500:
+   * description: Internal server error
+   */
 
 module.exports = router;
