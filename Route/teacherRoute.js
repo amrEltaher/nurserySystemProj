@@ -6,7 +6,8 @@ const { insertTeacher } = require('./../MW/validations/teacherValidation');
 const validator = require('./../MW/validations/validator');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
-const multer = require('multer');const storage = multer.diskStorage({
+const multer = require('multer');
+const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/');
   },
@@ -20,8 +21,8 @@ const upload = multer({ storage: storage });
 /**
  * @swagger
  * tags:
- *   name: Teachers
- *   description: API endpoints for managing teachers
+ *   - name: Teachers
+ *     description: API endpoints for managing teachers
  */
 
 router.route('/teachers')
@@ -59,34 +60,28 @@ router.route('/teachers')
    *         description: Teacher created successfully
    */
   .post(upload.single('profile'),insertTeacher, validator, conroller.addStudent);
-  /**
-   * @swagger
-   * /teachers:
-   *  post:
-   *  summary: Add a new teacher
-   * description: Add a new teacher
-   * tags: [Teachers]
-   * requestBody:
-   * required: true
-   *  content:
-   * application/json:
-   * schema:
-   * type: object
-   * properties:
-   * name:
-   * type: string
-   * subject:
-   * type: string
-   * example:
-   * name: "John Doe"
-   * subject: "Maths"
-   * responses:
-   * 201:
-   * description: Teacher added successfully
-   * 500:
-   * description: Internal server error
-   */
-
+/**
+ * @swagger
+ * /teachers:
+ *   post:
+ *     summary: Create a new teacher
+ *     description: Create a new teacher with the provided details
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               subject:
+ *                 type: string
+ *     responses:
+ *       '201':
+ *         description: Teacher created successfully
+ */
+  
 router.route('/teachers/:id')
   /**
    * @swagger
@@ -161,41 +156,42 @@ router.route('/teachers/:id')
    *         description: Teacher not found
    */
   .patch(upload.single('profile'),conroller.updateStudent);
+  //creat swagger documentation in yaml format
   /**
    * @swagger
    * /teachers/{id}:
-   *  patch:
-   *  summary: Update a teacher
-   * description: Update a teacher
-   * tags: [Teachers]
-   * parameters:
-   * - in: path
-   *  name: id
-   * required: true
-   * description: id of teacher
-   * schema:
-   * type: integer
-   * requestBody:
-   * required: true
-   * content:
-   * application/json:
-   * schema:
-   * type: object
-   * properties:
-   * name:
-   * type: string
-   * subject:
-   * type: string
-   * example:
-   * name: "John Doe"
-   * subject: "Maths"
-   * responses:
-   * 200:
-   * description: Teacher updated successfully
-   * 404:
-   * description: Teacher not found
-   * 500:
-   * description: Internal server error
+   *   patch:
+   *     summary: Update a teacher by id
+   *     description: Update a single teacher by their id
+   *     tags:
+   *       - Teachers
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         description: id of teacher
+   *         schema:
+   *           type: integer
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               name:
+   *                 type: string
+   *               subject:
+   *                 type: string
+   *             example:
+   *               name: "John Doe"
+   *               subject: "Maths"
+   *     responses:
+   *       '200':
+   *         description: Teacher updated successfully
+   *       '404':
+   *         description: Teacher not found   
+   *       '500':
+   *         description: Internal server error
    */
-
 module.exports = router;
